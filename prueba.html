@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Obtener array de valores de 'institucion' desde JSON</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div id="resultado">
+        <!-- Aquí se mostrará el resultado -->
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Hacer la solicitud AJAX para obtener el JSON
+            $.ajax({
+                url: 'https://directus.dp.gob.do/items/instituciones?sort=institucion&limit=-1', // Reemplaza con la URL de tu JSON
+                crossDomain: true,
+                dataType: 'json',
+                success: function(data) {
+                    // Verificar si 'data' existe y es un array
+                    if (data && Array.isArray(data.data)) {
+                        // Array para almacenar los valores de 'institucion'
+                        var instituciones = [];
+
+                        // Recorrer el array 'data' y extraer los valores de 'institucion'
+                        data.data.forEach(function(item) {
+                            if (item.institucion) {
+                                instituciones.push(item.institucion);
+                            }
+                        });
+
+                        // Mostrar el array resultante en la página
+                        $('#resultado').text("Array de instituciones: " + JSON.stringify(instituciones));
+                    } else {
+                        $('#resultado').text("No se encontró un array de 'data' en el JSON recibido.");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error al obtener los datos JSON: " + error);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

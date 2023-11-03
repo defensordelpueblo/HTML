@@ -1,290 +1,125 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <link rel="stylesheet" href="./css/main.css">
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-  <script src="https://raw.githubusercontent.com/RobinHerbots/Inputmask/5.x/dist/inputmask.min.js"></script>
+  <head>
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <title>Eventos 3</title>
+  </head>
+  <body class="style-0">
+    <div class="style-2">
+      <header class="style-3">
+        <img src="./img/logodp.png" alt="Logo Defensor del Pueblo" class="style-4">
+      </header>
+      <main class="style-5">
+        <div shadow-lg="" rounded-xl="" pb-10="" my-4="" w-full="" h-full="" mx-auto="" flex="" items-center="" justify-center="" flex-col="" rounded-3xl="" class="style-6">
+          <div class="style-7">
+            <h1 id="listaDatos" class="style-8">Título</h1>
+
+
+            <div id="resultados">
+              <!-- Aquí se mostrarán los resultados -->
+          </div>
+
+          </div>
+          <form action="#" autocomplete="off" class="style-9">
+            <div class="style-16">
+              <div class="style-17">
+                <input class="style-11" name="documento" maxlength="11" type="text" placeholder="Ingrese cédula o pasaporte" value=""><label for="tipo_documento" class="style-15">Tipo de documento</label>
+              </div>
+              <div class="style-20">
+                <input class="style-11" id="genero" name="genero" type="text" placeholder="Ingrese su género"><label for="genero" class="style-29">Género</label>
+              </div>
+            </div>
+            <div class="style-16">
+              <div class="style-17">
+                <input class="style-11" name="nombre" type="text" placeholder="Ingrese su nombre" value=""><label for="nombre" class="style-19">Nombre</label>
+              </div>
+              <div class="style-20">
+                <input class="style-21" name="apellido" type="text" placeholder="Ingrese su apellido" value=""><label for="apellido" class="style-22">Apellido</label>
+              </div>
+            </div>
+            <div class="style-16">
+              <div class="style-17">
+                <input class="style-11" name="celular" type="phone" placeholder="Ingrese su número de teléfono" value=""><label for="celular" class="style-26">Teléfono</label>
+              </div>
+              <div class="style-20">
+                <input class="style-21" name="email" type="email" placeholder="Ingrese su correo electrónico" value=""><label for="email" class="style-29">Correo electrónico</label>
+              </div>
+            </div>
+            <div class="style-17">
+              <input class="style-11" id="institucion" name="institucion" type="text" placeholder="Ingrese su institución"><label for="institucion" class="style-29">Institución</label>
+            </div>
+            <div class="style-16">
+              <button class="rounded-lg w-full py-2.5 mt-10 shadow shadow-teal-300 bg-[#00cfd4] text-white text-md text-center font-bold hover:shadow-none focus:ring-4 focus:outline-none focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none" type="submit"></button>
+            </div>
+          </form>
+        </div>
+      </main>
+      <footer class="style-306">
+        <div class="style-307">
+          <img src="./img/whitedp.png" alt="Defensor del Pueblo" class="style-308">
+          <p class="style-309">DEFENSOR DEL PUEBLO</p>
+          <p class="style-310">Av. Tiradentes esquina Av. 27 de Febrero, Plaza Merengue, Santo Domingo de Guzmán, Distrito Nacional, República Dominicana.<br class="style-311">
+          Tel.: (809) 381-4777 Email: info@defensordelpueblo.gob.do<br class="style-312">
+          Horario: de 8:00 a.m. a 4:00 p.m. de Lunes a Viernes.</p>
+          <p class="style-313"><a href="http://defensordelpueblo.do/terminos-de-uso/" class="style-314">Términos de uso</a> | <a href="http://defensordelpueblo.do/politicas-de-privacidad/" class="style-315">Políticas de Privacidad</a> | <a href="http://defensordelpueblo.do/preguntas-frecuentes/" class="style-316">Preguntas Frecuentes</a></p>
+        </div>
+        <div class="style-317">
+          <span class="style-318">© 2023 - Defensor del Pueblo</span> | <span class="style-319">Todos los Derechos Reservados.</span>
+        </div>
+      </footer>
+    </div>
+  </body>
+
+  <script>
+    $(document).ready(function() {
+        // Hacer la solicitud AJAX para obtener el JSON
+        $.ajax({
+            url: 'https://directus.dp.gob.do/items/instituciones?sort=institucion&limit=-1', // Reemplaza con la URL de tu JSON
+            crossDomain: true,
+            dataType: 'json',
+            success: function(data) {
+                // Verificar si 'data' existe y es un array
+                if (data && Array.isArray(data.data)) {
+                    // Array para almacenar los valores de 'institucion'
+                    var instituciones = [];
+
+                    // Recorrer el array 'data' y extraer los valores de 'institucion'
+                    data.data.forEach(function(item) {
+                        if (item.institucion) {
+                            instituciones.push(item.institucion);
+                        }
+                    });
+
+                    // Mostrar el array resultante en la página
+                    $('#resultado').text("Array de instituciones: " + JSON.stringify(instituciones));
+                    $( "#institucion" ).autocomplete({
+                      source: instituciones,
+                      classes: {
+                        "ui-autocomplete": "style-301"
+                      }
+                    });
+                } else {
+                    $('#resultado').text("No se encontró un array de 'data' en el JSON recibido.");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error al obtener los datos JSON: " + error);
+            }
+        });
+    });
+  </script>
+
   <script>
     $( function() {
-      var availableTags = [
-        "Abogado",
-        "Acción Comunitaria por el Progreso",
-        "Acción Para La Educación",
-        "ACNUDH",
-        "ACNUR",
-        "AESA / Agencia Estatal de Seguridad Aérea",
-        "Agencia Alemana de Cooperación (GTZ)",
-        "Agencia Brasileña de Cooperación Internacional",
-        "Agencia de Cooperación Internacional de Corea (KOICA)",
-        "Agencia de Cooperación Internacional de Japón",
-        "Agencia de los Estados Unidos para el Desarrollo Internacional (USAID)",
-        "Agencia Francesa de Desarrollo",
-        "ALFALIT DOMINICANA",
-        "Alianza Dominicana Contra la Corrupción",
-        "Alianza ONG's",
-        "Alianza País",
-        "Asociación de Industrias de la República Dominicana (AIRD)",
-        "Asociación de Rectores Universidades",
-        "Asociación Dominicana de Profesores (ADP)",
-        "Asociación Dominicana Pro-Bienestar de la Familia",
-        "Asociación Española de Normalización y Certificación (AENOR)",
-        "Asociación Nacional de Jóvenes Empresarios (ANJE)",
-        "Asociación Tú, Mujer, Inc.",
-        "Banco Centroamericano de Integración Economica (BCIE)",
-        "Banco Interamericano de Desarrollo (BID)",
-        "Banco Mundial",
-        "BIS",
-        "Cámara Americana de Comercio de la República Dominicana",
-        "Cámara de Comercio y Producción Santo Domingo",
-        "Cámara de Comercio y Turismo Dominico-Suiza",
-        "Cámara de Cuentas",
-        "Cámara Dominico Portuguesa de la RD",
-        "Centro Casas Comunitarias de Justicia",
-        "Centro de Estudios Sociales Juan Montalvo",
-        "Centro de Estudios Sociales y Demográficos",
-        "Centro de Investigación para la Acción Femenina",
-        "Centro de Investigación y Apoyo Cultural, Inc.",
-        "Centro de Orientación e Investigación Integral",
-        "Centro de Planificación y Acción Ecuménica, Inc.",
-        "Centro de Servicios Legales para la Mujer",
-        "Centro de Solidaridad para el Desarrollo de la Mujer",
-        "Centro Juan XXIII",
-        "Centro Latinoamericano de Administración para el Desarrollo (CLAD)",
-        "Centro Regional de Estrategias Económicas Sostenibles",
-        "Centro Universitario de Estudios Políticos y Sociales",
-        "CHILDREN INTERNATIONAL",
-        "Colegio de Abogados de la República Dominicana",
-        "Colegio de Abogados República Dominicana (CARD)",
-        "Colegio Dominicano de Contadores Públicos Autorizados",
-        "Colegio Dominicano de Ingenierios, Arquitectos y Agrimensores",
-        "Colegio Dominicano de Periodistas",
-        "Colegio Médico Dominicano",
-        "Comisión de Justicia y Derechos Humanos del Senado de la República",
-        "Comisión Nacional de Defensa de la Competencia (PRO-COMPETENCIA)",
-        "Comisión Nacional de Derechos Humanos",
-        "Comision Nacional de los Derechos Humanos",
-        "Comisión Reguladora de Prácticas Desleales en el Comercio y Medidas de Salvaguardia (CDC)",
-        "Comité para la Defensa de los Derechos Barriales",
-        "Conferencia del Episcopado Dominicano",
-        "Consejo de Desarrollo Económico y Social de Santo Domingo (CODESSD)",
-        "Consejo del Poder Judicial",
-        "Consejo Dominicano de la Unidad Evangélica (Codue)",
-        "Consejo Económico y Social",
-        "Consejo Nacional de la Empresa Privada",
-        "Consejo Nacional de la Empresa Privada (CONEP)",
-        "Consulado de Bolivia en la República Dominicana",
-        "Consulado de Brasil en la República Dominicana",
-        "Consulado de canadá en la República Dominicana",
-        "Consulado de Ecuador en la República Dominicana",
-        "Consulado de Guatemala en la República Dominicana",
-        "consulado de Honduras en la República Dominicana",
-        "Consulado de la República Dominicana en Boston",
-        "Consulado de la República Dominicana en NY",
-        "Consulado de Paraguay en la República Dominicana",
-        "Consulado de Perú en la República Dominicana",
-        "Consulado de Puerto Rico en la República Dominicana",
-        "Consulado El Salvador en la República Dominicana",
-        "Consulado General de España en la República Dominicana",
-        "Consulado General de la República Dominicana en Ciudad de Panamá",
-        "Consulado General de Panamá en la República Dominicana",
-        "Consulado General de Suecia en la República Dominicana",
-        "Consulado Honorario de Portugal en la República Dominicana",
-        "Contraloría General de la República",
-        "COPOLA",
-        "Defensor del Pueblo",
-        "Delegación de la Unión Europea",
-        "Dirección General de Contrataciones Públicas",
-        "Dirección General de Ética e Integridad Gubernamental (DIGEIG)",
-        "Dirección General de Información y Defensa de los Afiliados a la Seguridad Social (DIDA)",
-        "Dirección General Seguridad de Tránsito y Transporte Terrestre (DIGESETT)",
-        "DXC",
-        "EDUCA",
-        "Embajada de Alemania en la República Dominicana",
-        "Embajada de Argentina en la República Dominicana",
-        "Embajada de Brasil en la República Dominicana",
-        "Embajada de Chile en la República Dominicana",
-        "Embajada de Colombia en la República Dominicana",
-        "Embajada de Costa Rica en la República Dominicana",
-        "Embajada de España en la República Dominicana",
-        "Embajada de Francia en la República Dominicana",
-        "Embajada de Israel en la República Dominicana",
-        "Embajada de Japón en la República Dominicana",
-        "Embajada de la República Dominicana en Ciudad de Panamá",
-        "Embajada de la República Dominicana en Guatemala",
-        "Embajada de la República Dominicana en NY",
-        "Embajada de Mexico en la República Dominicana",
-        "Embajador de España",
-        "Embajador en Vietnam",
-        "Embajadora de Argentina en RD",
-        "Escuela de Derecho UASD",
-        "Escuela Nacional de la Judicatura",
-        "Escuela Nacional del Ministerio Público (ENMP)",
-        "Escuelas/Hogares",
-        "Esperanza Democrática",
-        "Facultad Latinoamericana de Ciencias Políticas",
-        "Facultad Latinoamericana de Ciencias Sociales",
-        "FAO",
-        "FCIP (UASD)",
-        "Federación Dominicana de Municipios",
-        "FIDA",
-        "FNP",
-        "FOPPPREDOM",
-        "Foro Socio Educativo-Centro Proveda",
-        "FP",
-        "Fundación Friedrich Ebert",
-        "Fundación Inicia Educación",
-        "Fundación Institucionalidad y Justicia",
-        "Fundación Justicia y Transparencia",
-        "Fundación Konrad Adenauer",
-        "Fundación NOVAGOB",
-        "Fundacion por los Derechos del Consumidor",
-        "Fundación Prensa y Derecho",
-        "Gabinete de Innovación",
-        "Hogares de Paso (CONANI)",
-        "IAEA",
-        "INPRESCONDO",
-        "Insituto OMG",
-        "Instituto De Dominicanos En El Exterior ( Index ) (MIAMI)",
-        "Instituto De Dominicanos En El Exterior ( Index ) España-Barcelona",
-        "Instituto De Dominicanos En El Exterior ( Index ) España-Madrid",
-        "Instituto De Dominicanos En El Exterior ( Index ) España-Valencia",
-        "Instituto De Dominicanos En El Exterior ( Index ) Italia",
-        "Instituto De Dominicanos En El Exterior ( Index ) Massachusets",
-        "Instituto De Dominicanos En El Exterior ( Index ) Miami",
-        "Instituto De Dominicanos En El Exterior ( Index ) New York",
-        "Instituto De Dominicanos En El Exterior ( Index ) Panamá",
-        "Instituto De Dominicanos En El Exterior ( Index ) Pensilvania",
-        "Instituto De Dominicanos En El Exterior ( Index ) Puerto Rico",
-        "Instituto De Dominicanos En El Exterior ( Index ) Venezuela",
-        "Instituto De Dominicanos En El Exterior ( Index ) Washington",
-        "Instituto de Formación Diplomatica y Consular",
-        "Instituto Dominicano de Aviación Civil (IDAC)",
-        "Instituto Dominicano de las Telecomunicaciones (INDOTEL)- Departamento de Asistencia al Usuario (DAU)",
-        "Instituto Especializado de Estudios Superiores de Derecho Empresarial",
-        "Instituto Global de Altos Estudios en Ciencias Sociales",
-        "Instituto Nacional de la Salud",
-        "Instituto Nacional de Protección de los Derechos del Consumidor (PRO-CONSUMIDOR)",
-        "Instituto Nacional de Tránsito y Transporte Terrestre (INTRANT)",
-        "Instituto Superior para la Defensa",
-        "Isntituto Policial de Educación",
-        "Junta Central Electoral (JCE)",
-        "MARCHA VERDE",
-        "MCNPC",
-        "Ministerio de Cultura",
-        "Ministerio de Defensa",
-        "Ministerio de Economía, Planificación y Desarrollo",
-        "Ministerio de Educación",
-        "Ministerio de Educación Superior, Ciencia y Tecnología",
-        "Ministerio de Interior y Policía",
-        "Ministerio de la Mujer-Casas de Acogida o Refugios",
-        "Ministerio de Medio Ambiente y Recursos Naturales",
-        "Ministerio de Relaciones Exteriores",
-        "Ministerio de Salud Pública",
-        "MODA",
-        "Mov. Primero la Gente",
-        "OCR ONU",
-        "OEA/ Organización de los Estados Americanos",
-        "OEI/ Organización de Estados Iberoamericanos",
-        "Oficial de Mapeo de Soluciones, Laboratorio de Aceleración",
-        "Oficina de Protección al Consumidor de la Superintendencia de Electricidad (Protecom)",
-        "Oficina de Servicios y Protección al Usuario de la Superintendencia de Bancos (ProUsuario)",
-        "Oficina Gubernamental de Tecnologías de la Información y Comunicación (OGTIC)",
-        "Oficina Nacional de la Defensa Pública",
-        "Oficina Senatorial Provincia Santo Domingo",
-        "Oficina Técnica de Cooperación Internacional (AECID)",
-        "OIM",
-        "OIT",
-        "ONU Mujeres",
-        "ONU-HABITAT",
-        "ONUSIDA",
-        "OPS/OMS",
-        "Organización de Estados Iberoamericanos (OEI)",
-        "Organización de Estados Iberoamericanos para la Educación, la Ciencia y la Cultura (OEI)",
-        "PACI",
-        "PAIS POSIBLE",
-        "País Posible",
-        "PAL",
-        "PARLACEN",
-        "Participación Ciudadana",
-        "PARTIDO HUMANISTA",
-        "PASOVE",
-        "Patronato de Ayuda a Casos de Mujeres Maltratadas",
-        "PCR",
-        "PDI",
-        "PDP",
-        "PERIODISTA",
-        "Plan Internacional, RD",
-        "PLD",
-        "PLR",
-        "PNUD",
-        "PNVC",
-        "Policía Nacional",
-        "Pontificia Universidad Católica Madre y Maestra (PUCMM)",
-        "PP",
-        "PPC",
-        "PQDC",
-        "PRD",
-        "PRI",
-        "PRM",
-        "Procuraduría General de la República",
-        "PRSC",
-        "PRSD",
-        "PSC",
-        "PSOE- Partido Socialista Obrero Español",
-        "PUN",
-        "República de Corea (corea de sur) en la República Dominicana",
-        "RINDHCA/Red de Instituciones Nacionales para la Promoción y Protección de los Derechos Humanos del Continente Americano",
-        "Sistema de Naciones Unidas",
-        "Superintendencia de Seguros - Centro de Atención al Usuario",
-        "Superintendencia del Mercado de Valores de la República Dominicana (SIMV) - Departamento de Protección y Educación al Inversionista",
-        "Suprema Corte de Justicia",
-        "Tribunal Constitucional (TC)",
-        "Tribunal Superior Electoral (TSE)",
-        "UASD",
-        "UDC",
-        "UNESCO",
-        "UNFPA",
-        "UNICEF",
-        "Universidad Abierta Para Adultos",
-        "Universidad APEC",
-        "Universidad Autónoma de Santo Domingo (UASD)",
-        "Universidad Catóica Nordestana",
-        "Universidad Católica del Cibao",
-        "Universidad Cátolica del Este",
-        "Universidad Católica Nordestana (UCNE)",
-        "Universidad Católica Santo Domingo (UCSD)",
-        "Universidad Cátolica Tecnológica de Barahona",
-        "Universidad Central del Este",
-        "Universidad de la Tercera Edad",
-        "Universidad del Caribe (UNICARIBE)",
-        "Universidad Dominicana O &amp; M",
-        "Universidad Dominicana O&amp;M",
-        "Universidad Eugenio María de Hostos (UNIREMHOS)",
-        "Universidad Experimental Félix Adam",
-        "Universidad Federico Henríquez y Carvajal",
-        "Universidad Iberoamericana (UNIBE)",
-        "Universidad INCE",
-        "Universidad Nacional Evangélica",
-        "Universidad Nacional Pedro Henríquez Ureña (UNPHU)",
-        "Universidad Tecnológica de Santiago (UTESA)",
-        "Universidad Tecnológica del Cibao Oriental",
-        "Visión Mundial",
-        "WFP-Programa Mundial de Alimento",
-        "World Compliance Association"
-      ];
       var availableSexs = [
         "Prefiero no decir",
         "Masculino",
         "Femenino"
       ];
-      $( "#institucion" ).autocomplete({
-        source: availableTags,
-        classes: {
-          "ui-autocomplete": "style-301"
-        }
-      });
+      
       $( "#genero" ).autocomplete({
         source: availableSexs,
         classes: {
@@ -293,63 +128,41 @@
       });
       $(":input").inputmask();
     } );
+  </script>
+  
+  <script>
+    $(document).ready(function() {
+      // Obtener parámetro 'id' desde la URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get('id');
+        
+      // Verificar si se recibió el parámetro 'id'
+        if (id) {
+        // Hacer la solicitud AJAX para obtener los datos JSON
+        $.ajax({
+          url: 'https://directus.dp.gob.do/items/Actividades/' + id, // Reemplaza con tu URL real que devuelve JSON
+          crossDomain: true,
+          dataType: 'json',
+          success: function(data) {
+            // 'data' contiene los datos obtenidos del JSON
+            var lista = $('#listaDatos');
+    
+            // Iterar sobre los objetos y agregarlos al HTML
+            $.each(data, function(index, item) {
+              // Crear un nuevo elemento de lista y agregar los datos
+              var listItem = item.nombre;
+              lista.empty().append(listItem);
+            });
+          },
+          error: function() {
+            console.log('Hubo un error al obtener los datos.');
+          }
+        });
+      } else {
+        $('#datosJSON').text("No se proporcionó un ID en la URL");
+      }
+    });
     </script>
-  <title>Eventos 3</title>
-</head>
-<body class="style-0">
-  <div class="style-2">
-    <header class="style-3">
-      <img src="./img/logodp.png" alt="Logo Defensor del Pueblo" class="style-4">
-    </header>
-    <main class="style-5">
-      <div shadow-lg="" rounded-xl="" pb-10="" my-4="" w-full="" h-full="" mx-auto="" flex="" items-center="" justify-center="" flex-col="" rounded-3xl="" class="style-6">
-        <div class="style-7">
-          <h1 class="style-8">Docencias presenciales</h1>
-        </div>
-        <form action="#" autocomplete="off" class="style-9">
-          <div class="style-10">
-            <input class="style-11" name="documento" maxlength="11" type="text" placeholder="Ingrese cédula o pasaporte" value=""><label for="tipo_documento" class="style-15">Tipo de documento</label>
-          </div>
-          <div class="style-16">
-            <div class="style-17">
-              <input class="style-11" name="nombre" type="text" placeholder="Ingrese su nombre" value=""><label for="nombre" class="style-19">Nombre</label>
-            </div>
-            <div class="style-20">
-              <input class="style-21" name="apellido" type="text" placeholder="Ingrese su apellido" value=""><label for="apellido" class="style-22">Apellido</label>
-            </div>
-          </div>
-          <div class="style-16">
-            <div class="style-17">
-              <input class="style-11" name="celular" type="phone" placeholder="Ingrese su número de teléfono" value=""><label for="celular" class="style-26">Teléfono</label>
-            </div>
-            <div class="style-20">
-              <input class="style-21" name="email" type="email" placeholder="Ingrese su correo electrónico" value=""><label for="email" class="style-29">Correo electrónico</label>
-            </div>
-          </div>
-          <div class="style-17">
-            <input class="style-11" id="institucion" name="institucion" type="text" placeholder="Ingrese su institución"><label for="institucion" class="style-29">Institución</label>
-          </div>
-          <div class="style-17">
-            <input class="style-11" id="genero" name="genero" type="text" placeholder="Ingrese su género"><label for="genero" class="style-29">Género</label>
-          </div>
-        </form>
-      </div>
-    </main>
-    <footer class="style-306">
-      <div class="style-307">
-        <img src="./img/whitedp.png" alt="Defensor del Pueblo" class="style-308">
-        <p class="style-309">DEFENSOR DEL PUEBLO</p>
-        <p class="style-310">Av. Tiradentes esquina Av. 27 de Febrero, Plaza Merengue, Santo Domingo de Guzmán, Distrito Nacional, República Dominicana.<br class="style-311">
-        Tel.: (809) 381-4777 Email: info@defensordelpueblo.gob.do<br class="style-312">
-        Horario: de 8:00 a.m. a 4:00 p.m. de Lunes a Viernes.</p>
-        <p class="style-313"><a href="http://defensordelpueblo.do/terminos-de-uso/" class="style-314">Términos de uso</a> | <a href="http://defensordelpueblo.do/politicas-de-privacidad/" class="style-315">Políticas de Privacidad</a> | <a href="http://defensordelpueblo.do/preguntas-frecuentes/" class="style-316">Preguntas Frecuentes</a></p>
-      </div>
-      <div class="style-317">
-        <span class="style-318">© 2023 - Defensor del Pueblo</span> | <span class="style-319">Todos los Derechos Reservados.</span>
-      </div>
-    </footer>
-  </div>
-</body>
 
-</script>
+    
 </html>
