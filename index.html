@@ -13,23 +13,14 @@
         <img src="./img/logodp.png" alt="Logo Defensor del Pueblo" class="style-4">
       </header>
       <main class="style-5">
-        <div shadow-lg="" rounded-xl="" pb-10="" my-4="" w-full="" h-full="" mx-auto="" flex="" items-center="" justify-center="" flex-col="" rounded-3xl="" class="style-6">
+        <div class="style-6">
           <div class="style-7">
-            <h1 id="listaDatos" class="style-8">Título</h1>
-
-
-            <div id="resultados">
-              <!-- Aquí se mostrarán los resultados -->
-          </div>
-
+            <h1 class="style-8" id="listaDatos">.</h1>
           </div>
           <form action="#" autocomplete="off" class="style-9">
-            <div class="style-16">
+            <div class="style-20">
               <div class="style-17">
-                <input class="style-11" name="documento" maxlength="11" type="text" placeholder="Ingrese cédula o pasaporte" value=""><label for="tipo_documento" class="style-15">Tipo de documento</label>
-              </div>
-              <div class="style-20">
-                <input class="style-11" id="genero" name="genero" type="text" placeholder="Ingrese su género"><label for="genero" class="style-29">Género</label>
+                <input class="style-11 cep" name="documento" maxlength="11" type="text" placeholder="Ingrese cédula o pasaporte" value=""><label for="tipo_documento" class="style-15">Tipo de documento</label>
               </div>
             </div>
             <div class="style-16">
@@ -37,22 +28,28 @@
                 <input class="style-11" name="nombre" type="text" placeholder="Ingrese su nombre" value=""><label for="nombre" class="style-19">Nombre</label>
               </div>
               <div class="style-20">
-                <input class="style-21" name="apellido" type="text" placeholder="Ingrese su apellido" value=""><label for="apellido" class="style-22">Apellido</label>
+                <input class="style-11" name="apellido" type="text" placeholder="Ingrese su apellido" value=""><label for="apellido" class="style-22">Apellido</label>
               </div>
             </div>
             <div class="style-16">
               <div class="style-17">
-                <input class="style-11" name="celular" type="phone" placeholder="Ingrese su número de teléfono" value=""><label for="celular" class="style-26">Teléfono</label>
+                <input class="style-11 phone_us" name="celular" type="phone" placeholder="Ingrese su número de teléfono" value=""><label for="celular" class="style-26">Teléfono</label>
               </div>
               <div class="style-20">
-                <input class="style-21" name="email" type="email" placeholder="Ingrese su correo electrónico" value=""><label for="email" class="style-29">Correo electrónico</label>
+                <input class="style-11" name="email" type="email" placeholder="Ingrese su correo electrónico" value=""><label for="email" class="style-29">Correo electrónico</label>
               </div>
             </div>
             <div class="style-17">
               <input class="style-11" id="institucion" name="institucion" type="text" placeholder="Ingrese su institución"><label for="institucion" class="style-29">Institución</label>
             </div>
-            <div class="style-16">
-              <button class="rounded-lg w-full py-2.5 mt-10 shadow shadow-teal-300 bg-[#00cfd4] text-white text-md text-center font-bold hover:shadow-none focus:ring-4 focus:outline-none focus:ring-transparent disabled:opacity-50 disabled:pointer-events-none" type="submit"></button>
+            <div class="style-20">
+              <div class="style-17">
+                <input class="style-11" id="genero" name="genero" type="text" placeholder="Ingrese su género"><label for="genero" class="style-29">Género</label>
+              </div>
+            </div>
+            <input class="style-11" id="id" name="id" type="hidden" >
+            <div class="style-17">
+              <button class="style-11" class="" type="submit"></button>
             </div>
           </form>
         </div>
@@ -73,6 +70,16 @@
     </div>
   </body>
 
+  <script src="./js/jquery.mask.min.js"></script>
+
+  <script>
+      $(document).ready(function(){
+        $('.cep').mask('000-0000000-0');
+        $('.phone_us').mask('(000) 000-0000');
+      });
+  </script>
+
+  <!-- Agregar las instituciones a la lista -->
   <script>
     $(document).ready(function() {
         // Hacer la solicitud AJAX para obtener el JSON
@@ -112,6 +119,7 @@
     });
   </script>
 
+  <!-- Agregar los géneros a la lista -->
   <script>
     $( function() {
       var availableSexs = [
@@ -126,10 +134,10 @@
           "ui-autocomplete": "style-301"
         }
       });
-      $(":input").inputmask();
     } );
   </script>
   
+  <!-- Integración para mostrar el titulo de la actividad -->
   <script>
     $(document).ready(function() {
       // Obtener parámetro 'id' desde la URL
@@ -145,13 +153,15 @@
           dataType: 'json',
           success: function(data) {
             // 'data' contiene los datos obtenidos del JSON
-            var lista = $('#listaDatos');
-    
+            var valueActividad = $('#listaDatos');
+            var valueID = $('#id');
+
             // Iterar sobre los objetos y agregarlos al HTML
             $.each(data, function(index, item) {
               // Crear un nuevo elemento de lista y agregar los datos
               var listItem = item.nombre;
-              lista.empty().append(listItem);
+              valueActividad.empty().append(listItem);
+              valueID.val(id);
             });
           },
           error: function() {
@@ -164,5 +174,18 @@
     });
     </script>
 
-    
+    <!-- Usar enter en el formulario -->
+    <script>
+      $(document).ready(function() {
+          $('input').keypress(function(e) {
+              if (e.which === 13) { // Verifica si se presionó la tecla "Enter"
+                  e.preventDefault();
+                  var nextInput = $('input')[$('input').index(this) + 1]; // Obtiene el siguiente campo
+                  if (nextInput !== undefined) {
+                      nextInput.focus(); // Mueve el foco al siguiente campo
+                  }
+              }
+          });
+      });
+    </script>
 </html>
